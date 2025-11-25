@@ -5,7 +5,7 @@ import guru.springframework.spring7webapp.domain.Book;
 import guru.springframework.spring7webapp.domain.Publisher;
 import guru.springframework.spring7webapp.repositories.AuthorRepository;
 import guru.springframework.spring7webapp.repositories.BookRepository;
-import guru.springframework.spring7webapp.repositories.PublisherRepositroy;
+import guru.springframework.spring7webapp.repositories.PublisherRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +14,13 @@ public class BootstrapData implements CommandLineRunner {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
-    private final PublisherRepositroy publisherRepositroy;
+    private final PublisherRepository publisherRepository;
 
-    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepositroy publisherRepositroy) {
+    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository,
+                         PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
-        this.publisherRepositroy = publisherRepositroy;
+        this.publisherRepository = publisherRepository;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class BootstrapData implements CommandLineRunner {
         eric.setLastName("Evans");
 
         Book ddd = new Book();
-        ddd.setTitle("Domain driven design");
+        ddd.setTitle("Domain Driven Design");
         ddd.setIsbn("123456");
 
         Author ericSaved = authorRepository.save(eric);
@@ -52,19 +53,22 @@ public class BootstrapData implements CommandLineRunner {
         Publisher publisher = new Publisher();
         publisher.setPublisherName("My Publisher");
         publisher.setAddress("123 Main");
-        Publisher savedPublisher = publisherRepositroy.save(publisher);
+        Publisher savedPublisher = publisherRepository.save(publisher);
 
-        ddd.setPublisher(savedPublisher);
-        noEJB.setPublisher(savedPublisher);
+        dddSaved.setPublisher(savedPublisher);
+        noEJBSaved.setPublisher(savedPublisher);
 
         authorRepository.save(ericSaved);
         authorRepository.save(rodSaved);
         bookRepository.save(dddSaved);
         bookRepository.save(noEJBSaved);
-        publisherRepositroy.save(publisher);
 
+        System.out.println("In Bootstrap");
         System.out.println("Author Count: " + authorRepository.count());
         System.out.println("Book Count: " + bookRepository.count());
-        System.out.println("Publisher Count: " + publisherRepositroy.count());
+
+
+
+        System.out.println("Publisher Count: " + publisherRepository.count());
     }
 }
